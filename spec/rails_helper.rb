@@ -9,6 +9,9 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # return unless Rails.env.test?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
+# support以下のファイルを読み込むコード（必ずRSpec.configureより前に置く）
+
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -23,8 +26,6 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
-
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
@@ -36,6 +37,9 @@ end
 I18n.locale = "en"
 
 RSpec.configure do |config|
+
+  config.include SignInSupport
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
